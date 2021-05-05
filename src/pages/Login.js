@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import FirebaseContext from '../context/firebase';
+import * as ROUTES from '../constants/routes';
 
 export default function Login() {
   const history = useHistory();
@@ -12,7 +13,18 @@ export default function Login() {
   const [error, setError] = useState('');
   const isInvalid = password === '' || emailAddress === '';
 
-  const handleLogin = () => {};
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
+      history.push(ROUTES.DASHBOARD);
+    } catch (error) {
+      setEmailAddress('');
+      setPassword('');
+      setError(error.message);
+    }
+  };
 
   useEffect(() => {
     document.title = 'Login - SnapShot';
@@ -66,6 +78,7 @@ export default function Login() {
           <p className="text-sm">
             Don't have an account?
             <Link to="/signup" className="font-bold text-blue-medium">
+              {' '}
               Sign Up
             </Link>
           </p>
