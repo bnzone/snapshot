@@ -2,8 +2,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 
-// figure out why user is not showing instead of the skeleton
-
 const User = ({ username, fullName }) => {
   return !username || !fullName ? (
     <Skeleton count={1} height={61} />

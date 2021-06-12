@@ -42,3 +42,55 @@ export async function getSuggestedProfiles(userId, following) {
 
   return profiles;
 }
+
+export async function updateFollowing(userId) {
+  const result = await firebase
+    .firestore()
+    .collection('users')
+    .where('userId', '==', userId)
+    .get();
+
+  const profiles = result.docs.map((user) => ({
+    ...user.data(),
+    docId: user.id
+  }));
+}
+
+export async function updateFollowers(userId) {
+  let query = firebase
+    .firestore()
+    .collection('users')
+    .where('userId', '==', userId);
+}
+
+export async function updateLoggedInUserFollowing(
+  loggedInUserDocId, // currently logged in user doc id (user A)
+  profileId, // the user that user A requerst to follow
+  isFollowingProfile // true/false (is user A currently following the user)
+) {
+  return firebase
+    .firestore()
+    .collection('users')
+    .doc(loggedInUserDocId)
+    .update({
+      following: isFollowingProfile
+        ? FieldValue.arrayRemove(profileId)
+        : FieldValue.arrayUnion(profileId)
+    });
+}
+
+export async function updateFollowedUserFollowers(
+  profileDocId, // followed profile
+  loggedInUserDocId, // user who is trying to follow
+  isFollowingProfile // true/false currently following the user
+) {
+  return firebase
+    .firestore()
+    .collection('users')
+    .doc(profileDocId)
+    .update({
+      followers: isFollowingProfile
+        ? FieldValue.arrayRemove(loggedInUserDocId)
+        : FieldValue.arrayUnion(loggedInUserDocId)
+    });
+}
