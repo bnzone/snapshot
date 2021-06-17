@@ -3,12 +3,7 @@ import PropTypes from 'prop-types';
 import FirebaseContext from '../../context/firebase';
 import UserContext from '../../context/user';
 
-export default function AddComment({
-  docId,
-  comments,
-  setComments,
-  commentInput
-}) {
+export default function AddComment({ docId, comments, setComments, commentInput }) {
   const [comment, setComment] = useState('');
   const { firebase, FieldValue } = useContext(FirebaseContext);
   const {
@@ -36,9 +31,7 @@ export default function AddComment({
         className="flex justify-between pl-0 pr-5"
         method="POST"
         onSubmit={(event) =>
-          comment.length >= 1
-            ? handleSubmitComment(event)
-            : event.preventDefault()
+          comment.length >= 1 ? handleSubmitComment(event) : event.preventDefault()
         }
       >
         <input
@@ -53,9 +46,7 @@ export default function AddComment({
           ref={commentInput}
         />
         <button
-          className={`text-sm font-bold text-blue-medium ${
-            !comment && 'opacity-25'
-          }`}
+          className={`text-sm font-bold text-blue-medium ${!comment && 'opacity-25'}`}
           type="button"
           disabled={comment.length < 1}
           onClick={handleSubmitComment}

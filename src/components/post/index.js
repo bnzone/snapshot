@@ -20,7 +20,6 @@ export default function Post({ content }) {
         likedPhoto={content.userLikedPhoto}
         handleFocus={handleFocus}
       />
-
       <Footer caption={content.caption} username={content.username} />
       <Comments
         docId={content.docId}

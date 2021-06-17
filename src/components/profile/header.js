@@ -2,7 +2,7 @@
 import { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Skeleton from 'react-loading-skeleton';
-import useUser from '../../hooks/useUser';
+import useUser from '../../hooks/use-user';
 import { isUserFollowingProfile, toggleFollow } from '../../services/firebase';
 import UserContext from '../../context/user';
 import { DEFAULT_IMAGE_PATH } from '../../constants/paths';
@@ -30,21 +30,12 @@ export default function Header({
     setFollowerCount({
       followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1
     });
-    await toggleFollow(
-      isFollowingProfile,
-      user.docId,
-      profileDocId,
-      profileUserId,
-      user.userId
-    );
+    await toggleFollow(isFollowingProfile, user.docId, profileDocId, profileUserId, user.userId);
   };
 
   useEffect(() => {
     const isLoggedInUserFollowingProfile = async () => {
-      const isFollowing = await isUserFollowingProfile(
-        user.username,
-        profileUserId
-      );
+      const isFollowing = await isUserFollowingProfile(user.username, profileUserId);
       setIsFollowingProfile(!!isFollowing);
     };
 
@@ -111,9 +102,7 @@ export default function Header({
           )}
         </div>
         <div className="container mt-4">
-          <p className="font-medium">
-            {!fullName ? <Skeleton count={1} height={24} /> : fullName}
-          </p>
+          <p className="font-medium">{!fullName ? <Skeleton count={1} height={24} /> : fullName}</p>
         </div>
       </div>
     </div>

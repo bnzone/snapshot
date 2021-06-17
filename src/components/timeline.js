@@ -2,7 +2,7 @@
 import { useContext } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import LoggedInUserContext from '../context/logged-in-user';
-import usePhotos from '../hooks/usePhotos';
+import usePhotos from '../hooks/use-photos';
 import Post from './post';
 
 export default function Timeline() {
