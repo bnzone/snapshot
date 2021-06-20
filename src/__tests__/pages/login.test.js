@@ -2,9 +2,9 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
-import Login from '../pages/login';
-import FirebaseContext from '../context/firebase';
-import * as ROUTES from '../constants/routes';
+import Login from '../../pages/login';
+import FirebaseContext from '../../context/firebase';
+import * as ROUTES from '../../constants/routes';
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -14,7 +14,7 @@ jest.mock('react-router-dom', () => ({
   })
 }));
 
-jest.mock('../services/firebase');
+jest.mock('../../services/firebase');
 
 describe('<Login />', () => {
   beforeEach(() => {
