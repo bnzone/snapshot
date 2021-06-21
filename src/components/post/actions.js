@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import FirebaseContext from '../../context/firebase';
 import UserContext from '../../context/user';
 
-export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) {
+export default function Actions({
+  docId,
+  totalLikes,
+  likedPhoto,
+  handleFocus
+}) {
   const {
     user: { uid: userId }
   } = useContext(UserContext);
@@ -19,7 +24,9 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
       .collection('photos')
       .doc(docId)
       .update({
-        likes: toggleLiked ? FieldValue.arrayRemove(userId) : FieldValue.arrayUnion(userId)
+        likes: toggleLiked
+          ? FieldValue.arrayRemove(userId)
+          : FieldValue.arrayUnion(userId)
       });
 
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
@@ -28,7 +35,7 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
   return (
     <>
       <div className="flex justify-between p-4">
-        <div className="flex">
+        <div className="flex" data-testid="like-photo-494LKmaF03bUcYZ4xhNu">
           <svg
             data-testid={`like-photo-${docId}`}
             onClick={handleToggleLiked}
@@ -79,7 +86,9 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
         </div>
       </div>
       <div className="p-4 py-0">
-        <p className="font-bold">{likes === 1 ? `${likes} like` : `${likes} likes`}</p>
+        <p className="font-bold">
+          {likes === 1 ? `${likes} like` : `${likes} likes`}
+        </p>
       </div>
     </>
   );
