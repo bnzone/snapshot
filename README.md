@@ -9,7 +9,7 @@
 
 ## Introduction
 
-The application was built with the purpose of improving my skills using React and other technologies I have not used before, including Firebase and @tailwindcss.
+The application was built with the purpose of improving my skills using React and practice some technologies I have not used before, including Firebase and @tailwindcss.
 
 Live Demo at: [snapshot-three.vercel.app](https://snapshot-three.vercel.app/)
 
