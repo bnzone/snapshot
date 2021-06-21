@@ -34,4 +34,4 @@ Here is a list of technologies used:
 
 ## Acknowledgments
 
-This project is a clone ofinspired by [Instabram by Facebook](https://www.instagram.com/) web application. This is just a demo application with no itent of commercial use or any advertising.
+This project is a clone of [Instagram by Facebook](https://www.instagram.com/) web application. This is just a demo application with no itent of commercial use or any advertising.
