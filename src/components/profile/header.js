@@ -30,12 +30,21 @@ export default function Header({
     setFollowerCount({
       followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1
     });
-    await toggleFollow(isFollowingProfile, user.docId, profileDocId, profileUserId, user.userId);
+    await toggleFollow(
+      isFollowingProfile,
+      user.docId,
+      profileDocId,
+      profileUserId,
+      user.userId
+    );
   };
 
   useEffect(() => {
     const isLoggedInUserFollowingProfile = async () => {
-      const isFollowing = await isUserFollowingProfile(user.username, profileUserId);
+      const isFollowing = await isUserFollowingProfile(
+        user.username,
+        profileUserId
+      );
       setIsFollowingProfile(!!isFollowing);
     };
 
@@ -49,7 +58,7 @@ export default function Header({
       <div className="container flex justify-center items-center">
         {profileUsername ? (
           <img
-            className="rounded-full h-40 w-40 flex"
+            className="rounded-full h-16 w-16 md:h-20 lg:h-40 md:w-20 lg:w-40 flex"
             alt={`${fullName} profile picture`}
             src={`/images/avatars/${profileUsername}.jpg`}
             onError={(e) => {
@@ -82,7 +91,7 @@ export default function Header({
             )
           )}
         </div>
-        <div className="container flex mt-4">
+        <div className="container flex mt-4 flex-col lg:flex-row">
           {!followers || !following ? (
             <Skeleton count={1} width={677} height={24} />
           ) : (
@@ -102,7 +111,9 @@ export default function Header({
           )}
         </div>
         <div className="container mt-4">
-          <p className="font-medium">{!fullName ? <Skeleton count={1} height={24} /> : fullName}</p>
+          <p className="font-medium">
+            {!fullName ? <Skeleton count={1} height={24} /> : fullName}
+          </p>
         </div>
       </div>
     </div>

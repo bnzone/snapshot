@@ -13,7 +13,7 @@ export default function Header() {
   const history = useHistory();
 
   return (
-    <header className="h-16 bg-white border-b border-gray-primary mb-8">
+    <header className="h-16 bg-white border-b border-gray-primary mb-8 px-4 lg:px-0">
       <div className="container mx-auto max-w-screen-lg h-full">
         <div className="flex justify-between h-full">
           <div className="text-gray-700 text-center flex items-center align-items cursor-pointer">
@@ -62,7 +62,7 @@ export default function Header() {
                   }}
                 >
                   <svg
-                    className="w-8 mr-6 text-black-light cursor-pointer"
+                    className="w-8 mr-0 lg:mr-6 text-black-light cursor-pointer"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -77,7 +77,7 @@ export default function Header() {
                   </svg>
                 </button>
                 {user && (
-                  <div className="flex items-center cursor-pointer">
+                  <div className="hidden lg:flex items-center cursor-pointer">
                     <Link to={`/p/${user?.username}`}>
                       <img
                         className="rounded-full h-8 w-8 flex"
