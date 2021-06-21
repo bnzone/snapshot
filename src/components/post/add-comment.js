@@ -1,19 +1,21 @@
 import { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import FirebaseContext from '../../context/firebase';
+import useUser from '../../hooks/use-user';
 import UserContext from '../../context/user';
 
 export default function AddComment({ docId, comments, setComments, commentInput }) {
   const [comment, setComment] = useState('');
   const { firebase, FieldValue } = useContext(FirebaseContext);
   const {
-    user: { displayName }
+    user: { uid }
   } = useContext(UserContext);
+  const { user } = useUser(uid);
 
   const handleSubmitComment = (event) => {
     event.preventDefault();
 
-    setComments([...comments, { displayName, comment }]);
+    setComments([...comments, { displayName: user.username, comment }]);
     setComment('');
 
     return firebase
@@ -21,13 +23,14 @@ export default function AddComment({ docId, comments, setComments, commentInput 
       .collection('photos')
       .doc(docId)
       .update({
-        comments: FieldValue.arrayUnion({ displayName, comment })
+        comments: FieldValue.arrayUnion({ displayName: user.username, comment })
       });
   };
 
   return (
     <div className="border-t border-gray-primary">
       <form
+        data-testid={`add-comment-submit-${docId}`}
         className="flex justify-between pl-0 pr-5"
         method="POST"
         onSubmit={(event) =>
@@ -35,6 +38,7 @@ export default function AddComment({ docId, comments, setComments, commentInput 
         }
       >
         <input
+          data-testid={`add-comment-${docId}`}
           aria-label="Add a comment"
           autoComplete="off"
           className="text-sm text-gray-base w-full mr-3 py-5 px-4"

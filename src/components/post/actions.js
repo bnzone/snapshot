@@ -30,6 +30,7 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
       <div className="flex justify-between p-4">
         <div className="flex">
           <svg
+            data-testid={`like-photo-${docId}`}
             onClick={handleToggleLiked}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
@@ -41,7 +42,7 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
             viewBox="0 0 24 24"
             stroke="currentColor"
             tabIndex={0}
-            className={`w-8 mr-4 select-none cursor-pointer focus:outline-none ${
+            className={`w-8 mr-4 select-none cursor-pointer ${
               toggleLiked ? 'fill-red text-red-primary' : 'text-black-light'
             }`}
           >
@@ -53,13 +54,14 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
             />
           </svg>
           <svg
+            data-testid={`focus-input-${docId}`}
             onClick={handleFocus}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
                 handleFocus();
               }
             }}
-            className="w-8 text-black-light select-none cursor-pointer focus:outline-none"
+            className="w-8 text-black-light select-none cursor-pointer"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"

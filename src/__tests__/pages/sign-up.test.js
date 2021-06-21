@@ -47,7 +47,7 @@ describe('<SignUp />', () => {
     );
 
     await act(async () => {
-      doesUsernameExist.mockImplementation(() => Promise.resolve(true));
+      doesUsernameExist.mockImplementation(() => Promise.resolve(true)); // as true but inverse in the code
 
       await fireEvent.change(getByPlaceholderText('Username'), {
         target: { value: 'tester' }
@@ -153,7 +153,7 @@ describe('<SignUp />', () => {
     );
 
     await act(async () => {
-      doesUsernameExist.mockImplementation(() => Promise.resolve(false));
+      doesUsernameExist.mockImplementation(() => Promise.resolve(false)); // as true but inverse in the code
 
       await fireEvent.change(getByPlaceholderText('Username'), {
         target: { value: 'tester' }

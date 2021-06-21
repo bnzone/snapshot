@@ -84,7 +84,7 @@ describe('<Login />', () => {
 
     await act(async () => {
       await fireEvent.change(getByPlaceholderText('Email address'), {
-        target: { value: 'tester@gmail.com' }
+        target: { value: 'tester.com' }
       });
       await fireEvent.change(getByPlaceholderText('Password'), {
         target: { value: 'tester' }
@@ -93,7 +93,7 @@ describe('<Login />', () => {
 
       expect(document.title).toEqual('Login - SnapShot');
       expect(failToLogin).toHaveBeenCalled();
-      expect(failToLogin).toHaveBeenCalledWith('tester@gmail.com', 'tester');
+      expect(failToLogin).toHaveBeenCalledWith('tester.com', 'tester');
       expect(failToLogin).rejects.toThrow('Cannot sign in');
 
       await waitFor(() => {

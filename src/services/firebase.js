@@ -7,7 +7,7 @@ export async function doesUsernameExist(username) {
     .where('username', '==', username)
     .get();
 
-  return result.docs.length > 0;
+  return result.docs.map((user) => user.data().length > 0);
 }
 
 export async function getUserByUsername(username) {
@@ -23,42 +23,27 @@ export async function getUserByUsername(username) {
   }));
 }
 
+// get user from the firestore where userId === userId (passed from the auth)
 export async function getUserByUserId(userId) {
-  const result = await firebase
-    .firestore()
-    .collection('users')
-    .where('userId', '==', userId)
-    .get();
-  const user = result.docs.map((item) => ({
+  const result = await firebase.firestore().collection('users').where('userId', '==', userId).get();
+  return result.docs.map((item) => ({
     ...item.data(),
     docId: item.id
   }));
-
-  return user;
 }
 
 export async function getSuggestedProfiles(userId, following) {
-  let query = firebase.firestore().collection('users');
+  const result = await firebase.firestore().collection('users').limit(10).get();
 
-  if (following.length > 0) {
-    query = query.where('userId', 'not-in', [...following, userId]);
-  } else {
-    query = query.where('userId', '!=', userId);
-  }
-  const result = await query.limit(10).get();
-
-  const profiles = result.docs.map((user) => ({
-    ...user.data(),
-    docId: user.id
-  }));
-
-  return profiles;
+  return result.docs
+    .map((user) => ({ ...user.data(), docId: user.id }))
+    .filter((profile) => profile.userId !== userId && !following.includes(profile.userId));
 }
 
 export async function updateLoggedInUserFollowing(
-  loggedInUserDocId,
-  profileId,
-  isFollowingProfile
+  loggedInUserDocId, // currently logged in user document id (karl's profile)
+  profileId, // the user that karl requests to follow
+  isFollowingProfile // true/false (am i currently following this person?)
 ) {
   return firebase
     .firestore()
@@ -72,9 +57,9 @@ export async function updateLoggedInUserFollowing(
 }
 
 export async function updateFollowedUserFollowers(
-  profileDocId,
-  loggedInUserDocId,
-  isFollowingProfile
+  profileDocId, // currently logged in user document id (karl's profile)
+  loggedInUserDocId, // the user that karl requests to follow
+  isFollowingProfile // true/false (am i currently following this person?)
 ) {
   return firebase
     .firestore()
@@ -88,6 +73,7 @@ export async function updateFollowedUserFollowers(
 }
 
 export async function getPhotos(userId, following) {
+  // [5,4,2] => following
   const result = await firebase
     .firestore()
     .collection('photos')
@@ -105,9 +91,9 @@ export async function getPhotos(userId, following) {
       if (photo.likes.includes(userId)) {
         userLikedPhoto = true;
       }
-
+      // photo.userId = 2
       const user = await getUserByUserId(photo.userId);
-
+      // raphael
       const { username } = user[0];
       return { username, ...photo, userLikedPhoto };
     })
@@ -116,28 +102,25 @@ export async function getPhotos(userId, following) {
   return photosWithUserDetails;
 }
 
-export async function getUserPhotosByUserId(userId) {
+export async function getUserPhotosByUsername(username) {
+  const [user] = await getUserByUsername(username);
   const result = await firebase
     .firestore()
     .collection('photos')
-    .where('userId', '==', userId)
+    .where('userId', '==', user.userId)
     .get();
 
-  const photos = result.docs.map((photo) => ({
-    ...photo.data(),
-    docId: photo.id
+  return result.docs.map((item) => ({
+    ...item.data(),
+    docId: item.id
   }));
-  return photos;
 }
 
-export async function isUserFollowingProfile(
-  loggedInUserUsername,
-  profileUserId
-) {
+export async function isUserFollowingProfile(loggedInUserUsername, profileUserId) {
   const result = await firebase
     .firestore()
     .collection('users')
-    .where('username', '==', loggedInUserUsername)
+    .where('username', '==', loggedInUserUsername) // karl (active logged in user)
     .where('following', 'array-contains', profileUserId)
     .get();
 
@@ -156,15 +139,13 @@ export async function toggleFollow(
   profileUserId,
   followingUserId
 ) {
-  await updateLoggedInUserFollowing(
-    activeUserDocId,
-    profileUserId,
-    isFollowingProfile
-  );
+  // 1st param: karl's doc id
+  // 2nd param: raphael's user id
+  // 3rd param: is the user following this profile? e.g. does karl follow raphael? (true/false)
+  await updateLoggedInUserFollowing(activeUserDocId, profileUserId, isFollowingProfile);
 
-  await updateFollowedUserFollowers(
-    profileDocId,
-    followingUserId,
-    isFollowingProfile
-  );
+  // 1st param: karl's user id
+  // 2nd param: raphael's doc id
+  // 3rd param: is the user following this profile? e.g. does karl follow raphael? (true/false)
+  await updateFollowedUserFollowers(profileDocId, followingUserId, isFollowingProfile);
 }

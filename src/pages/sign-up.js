@@ -26,10 +26,12 @@ export default function SignUp() {
           .auth()
           .createUserWithEmailAndPassword(emailAddress, password);
 
+        // authentication -> emailAddress & password & username (displayName)
         await createdUserResult.user.updateProfile({
           displayName: username
         });
 
+        // firebase user collection (create a document)
         await firebase
           .firestore()
           .collection('users')
@@ -78,7 +80,7 @@ export default function SignUp() {
           <h1 className="flex justify-center w-full">
             <img
               src="/images/logo.png"
-              alt="Instagram"
+              alt="SnapShot"
               className="mt-2 mb-4 object-scale-down"
             />
           </h1>

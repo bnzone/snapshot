@@ -8,8 +8,10 @@ import Comments from './comments';
 
 export default function Post({ content }) {
   const commentInput = useRef(null);
-  const handleFocus = () => commentInput.current.focus();
+  const handleFocus = () => commentInput.current.focus(); // anon func so it doesn't get called right away
 
+  // components
+  // -> header, image, actions (like & comment icons), footer, comments
   return (
     <div className="rounded col-span-4 border bg-white border-gray-primary mb-12">
       <Header username={content.username} />

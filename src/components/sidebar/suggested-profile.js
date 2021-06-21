@@ -1,12 +1,7 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import {
-  updateLoggedInUserFollowing,
-  updateFollowedUserFollowers,
-  getUserByUserId
-} from '../../services/firebase';
-import LoggedInUserContext from '../../context/logged-in-user';
+import { updateLoggedInUserFollowing, updateFollowedUserFollowers } from '../../services/firebase';
 
 export default function SuggestedProfile({
   profileDocId,
@@ -16,14 +11,11 @@ export default function SuggestedProfile({
   loggedInUserDocId
 }) {
   const [followed, setFollowed] = useState(false);
-  const { setActiveUser } = useContext(LoggedInUserContext);
 
   async function handleFollowUser() {
     setFollowed(true);
     await updateLoggedInUserFollowing(loggedInUserDocId, profileId, false);
     await updateFollowedUserFollowers(profileDocId, userId, false);
-    const [user] = await getUserByUserId(userId);
-    setActiveUser(user);
   }
 
   return !followed ? (
@@ -33,9 +25,6 @@ export default function SuggestedProfile({
           className="rounded-full w-8 flex mr-3"
           src={`/images/avatars/${username}.jpg`}
           alt=""
-          onError={(e) => {
-            e.target.src = `/images/avatars/default.png`;
-          }}
         />
         <Link to={`/p/${username}`}>
           <p className="font-bold text-sm">{username}</p>
