@@ -31,6 +31,8 @@ Here is a list of technologies used:
 - **Tailwind**: A utility-first CSS framework
 - **Firebase**: Cloud database/auth provider
 
+- Tested with **React Testing Library** and **Cypress**
+
 
 ## Acknowledgments
 
